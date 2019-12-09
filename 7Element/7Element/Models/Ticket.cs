@@ -11,7 +11,7 @@ namespace _7Element.Models
         [Key]
         public int TicketId { get; set; }
         [Required]
-        public string DonatedTicketsId { get; set; }
+        public int DonatedTicketsId { get; set; }
 
         [Required]
         public DonatedTickets DonatedTickets { get; set; }
