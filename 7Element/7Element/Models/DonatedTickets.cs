@@ -10,7 +10,6 @@ namespace _7Element.Models
     {
         [Key]
         public int DonatedTicketsId { get; set; }
-        [Key]
         [Required]
         public string UserId { get; set; }
 

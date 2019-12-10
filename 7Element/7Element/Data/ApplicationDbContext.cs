@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using _7Element.Models;
+using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -23,14 +24,10 @@ namespace _7Element.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
             modelBuilder.Entity<UserPickupGame>()
                 .Property(b => b.DateTime)
                 .HasDefaultValueSql("GETDATE()");
 
-            // Restrict deletion of related order when OrderProducts entry is removed
             modelBuilder.Entity<PickupGame>()
                 .HasMany(o => o.UserPickupGames)
                 .WithOne(l => l.PickupGame)
@@ -40,7 +37,6 @@ namespace _7Element.Data
                 .WithOne(l => l.PickupGame)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Restrict deletion of related product when OrderProducts entry is removed
             modelBuilder.Entity<PredsGame>()
                 .HasMany(o => o.UserPredsGames)
                 .WithOne(l => l.PredsGame)
@@ -48,6 +44,10 @@ namespace _7Element.Data
             modelBuilder.Entity<PredsGame>()
                 .HasMany(o => o.DonatedTickets)
                 .WithOne(l => l.PredsGame)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<UserPredsGame>()
+                .HasOne(s => s.User)
+                .WithMany(s => s.UserPredsGames)
                 .OnDelete(DeleteBehavior.Restrict);
 
 
@@ -114,6 +114,7 @@ namespace _7Element.Data
             modelBuilder.Entity<UserPickupGame>().HasData(
                 new UserPickupGame()
                 {
+                    UserPickupGameId = 1,
                     UserId = user.Id,
                     PickupGameId = 1,
                     DateTime = DateTime.Now,
@@ -122,6 +123,7 @@ namespace _7Element.Data
                 },
                 new UserPickupGame()
                 {
+                    UserPickupGameId = 2,
                     UserId = anotherUser.Id,
                     PickupGameId = 1,
                     DateTime = DateTime.Now,
@@ -189,11 +191,13 @@ namespace _7Element.Data
                 {
                     DonatedTicketsId = 1,
                     PredsGameId = 1,
+                    UserId = user.Id
                 },
                 new DonatedTickets()
                 {
                     DonatedTicketsId = 2,
                     PredsGameId = 1,
+                    UserId = user.Id
                 }
             );
 
