@@ -10,16 +10,23 @@ namespace _7Element.Models
     {
         [Key]
         public int DonatedTicketsId { get; set; }
-        [Key]
         [Required]
         public string UserId { get; set; }
 
         [Required]
         public ApplicationUser User { get; set; }
         [Required]
-        public string PredsGameId { get; set; }
+        public int PredsGameId { get; set; }
 
         [Required]
         public PredsGame PredsGame { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
+        [Required]
+        public string EmailAddress {get; set;}
+        [Required]
+        public string EmailTitle { get; set; }
+        [Required]
+        public string EmailBody { get; set; }
+        public bool TransactionComplete { get; set; }
     }
 }

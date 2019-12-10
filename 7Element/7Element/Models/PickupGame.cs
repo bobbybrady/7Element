@@ -20,5 +20,7 @@ namespace _7Element.Models
         public string Location { get; set; }
         [Required]
         public string Title { get; set; }
+        public virtual ICollection<UserPickupGame> UserPickupGames { get; set; }
+        public virtual ICollection<PlayerStats> PlayerStats { get; set; }
     }
 }

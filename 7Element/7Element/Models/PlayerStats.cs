@@ -17,7 +17,7 @@ namespace _7Element.Models
         [Required]
         public ApplicationUser User { get; set; }
         [Required]
-        public string PickupGameId { get; set; }
+        public int PickupGameId { get; set; }
 
         [Required]
         public PickupGame PickupGame { get; set; }

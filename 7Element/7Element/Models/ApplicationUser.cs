@@ -16,10 +16,20 @@ namespace _7Element.Models
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return $"{FirstName} {LastName}";
+            }
+        }
         [Required]
         public string Position { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsVeteran { get; set; }
+        public virtual ICollection<PlayerStats> PlayerStats { get; set; }
+        public virtual ICollection<UserPickupGame> UserPickupGames { get; set; }
+        public virtual ICollection<UserPredsGame> UserPredsGames { get; set; }
 
     }
 }
