@@ -191,13 +191,21 @@ namespace _7Element.Data
                 {
                     DonatedTicketsId = 1,
                     PredsGameId = 1,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    EmailAddress = "test@test.com",
+                    EmailBody = "test",
+                    EmailTitle = "test",
+                    TransactionComplete = true
                 },
                 new DonatedTickets()
                 {
                     DonatedTicketsId = 2,
                     PredsGameId = 1,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    EmailAddress = "test@test.com",
+                    EmailBody = "test",
+                    EmailTitle = "test",
+                    TransactionComplete = true
                 }
             );
 

@@ -21,5 +21,12 @@ namespace _7Element.Models
         [Required]
         public PredsGame PredsGame { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
+        [Required]
+        public string EmailAddress {get; set;}
+        [Required]
+        public string EmailTitle { get; set; }
+        [Required]
+        public string EmailBody { get; set; }
+        public bool TransactionComplete { get; set; }
     }
 }

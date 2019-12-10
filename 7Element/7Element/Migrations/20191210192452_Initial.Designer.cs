@@ -10,7 +10,7 @@ using _7Element.Data;
 namespace _7Element.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191210161449_Initial")]
+    [Migration("20191210192452_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -243,7 +243,7 @@ namespace _7Element.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8a8a8a09-e619-4d5e-a761-d7eb1a4e48cb",
+                            ConcurrencyStamp = "873f4cdd-fb2f-4bc9-9ac3-303aecc81121",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -253,7 +253,7 @@ namespace _7Element.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEnTyBPdOHugRlGCs1vDzIoeFHbzv8Qx66ELaKrC3K4Bq7PwTlvE4Zy/Mrx6ifmXXQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJmHQEdWU9CycZ6F9nXcRQUW63yhzWktpRfqhtxvu8gvjZ+yM/XSqVAkZqtj4u5Amg==",
                             PhoneNumberConfirmed = false,
                             Position = "Goalie",
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
@@ -264,7 +264,7 @@ namespace _7Element.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-fffffffff123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "041a86ff-0222-45c8-b241-bba32654cef5",
+                            ConcurrencyStamp = "b0a7c5c9-d7e2-4269-bdbc-2913238a29c2",
                             Email = "bobby@bobby.com",
                             EmailConfirmed = true,
                             FirstName = "Bobby",
@@ -274,7 +274,7 @@ namespace _7Element.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BOBBY@BOBBY.COM",
                             NormalizedUserName = "BOBBY@BOBBY.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF7riStwGMw/w+DjXL8ELbHxNrG1odfa9K5lOgsSA2TOekKP8hXtNgXHz1x5RXW5uw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAED+WsEGm2AQlqD6aEvI4kfX3Lu0pfHOP7cx4BcFJlI3RM5CtzjdBH7E8pVmlddO8mg==",
                             PhoneNumberConfirmed = false,
                             Position = "Forward",
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794123",
@@ -290,8 +290,23 @@ namespace _7Element.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PredsGameId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("TransactionComplete")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -309,13 +324,21 @@ namespace _7Element.Migrations
                         new
                         {
                             DonatedTicketsId = 1,
+                            EmailAddress = "test@test.com",
+                            EmailBody = "test",
+                            EmailTitle = "test",
                             PredsGameId = 1,
+                            TransactionComplete = true,
                             UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
                         },
                         new
                         {
                             DonatedTicketsId = 2,
+                            EmailAddress = "test@test.com",
+                            EmailBody = "test",
+                            EmailTitle = "test",
                             PredsGameId = 1,
+                            TransactionComplete = true,
                             UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
                         });
                 });
@@ -352,7 +375,7 @@ namespace _7Element.Migrations
                         new
                         {
                             PickupGameId = 1,
-                            DateTime = new DateTime(2019, 12, 10, 10, 14, 49, 424, DateTimeKind.Local).AddTicks(7897),
+                            DateTime = new DateTime(2019, 12, 10, 13, 24, 52, 453, DateTimeKind.Local).AddTicks(1298),
                             Location = "Ford Ice Bellvue",
                             MaxGoalies = 2,
                             MaxSkaters = 20,
@@ -361,7 +384,7 @@ namespace _7Element.Migrations
                         new
                         {
                             PickupGameId = 2,
-                            DateTime = new DateTime(2019, 12, 10, 10, 14, 49, 425, DateTimeKind.Local).AddTicks(5674),
+                            DateTime = new DateTime(2019, 12, 10, 13, 24, 52, 453, DateTimeKind.Local).AddTicks(8501),
                             Location = "Ford Ice Antioch",
                             MaxGoalies = 2,
                             MaxSkaters = 20,
@@ -488,7 +511,7 @@ namespace _7Element.Migrations
                         new
                         {
                             PredsGameId = 1,
-                            DateTime = new DateTime(2019, 12, 10, 10, 14, 49, 426, DateTimeKind.Local).AddTicks(4063),
+                            DateTime = new DateTime(2019, 12, 10, 13, 24, 52, 454, DateTimeKind.Local).AddTicks(7975),
                             Opponent = "Dallas Stars"
                         });
                 });
@@ -590,7 +613,7 @@ namespace _7Element.Migrations
                         new
                         {
                             UserPickupGameId = 1,
-                            DateTime = new DateTime(2019, 12, 10, 10, 14, 49, 425, DateTimeKind.Local).AddTicks(7617),
+                            DateTime = new DateTime(2019, 12, 10, 13, 24, 52, 454, DateTimeKind.Local).AddTicks(1602),
                             IsStandby = false,
                             PickupGameId = 1,
                             UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
@@ -598,7 +621,7 @@ namespace _7Element.Migrations
                         new
                         {
                             UserPickupGameId = 2,
-                            DateTime = new DateTime(2019, 12, 10, 10, 14, 49, 425, DateTimeKind.Local).AddTicks(8434),
+                            DateTime = new DateTime(2019, 12, 10, 13, 24, 52, 454, DateTimeKind.Local).AddTicks(2535),
                             IsStandby = false,
                             PickupGameId = 1,
                             UserId = "00000000-ffff-ffff-ffff-fffffffff123"
