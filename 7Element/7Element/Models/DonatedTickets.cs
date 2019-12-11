@@ -17,12 +17,12 @@ namespace _7Element.Models
         [Required]
         public ApplicationUser User { get; set; }
         [Required]
-        [Display(Name = "Games")]
+        [Display(Name = "Game")]
         public int PredsGameId { get; set; }
 
         [Required]
         public PredsGame PredsGame { get; set; }
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        
         [Required]
         [Display(Name = "Email Address")]
         public string EmailAddress {get; set;}
@@ -33,7 +33,6 @@ namespace _7Element.Models
         [Display(Name = "Message")]
         public string EmailBody { get; set; }
         public bool TransactionComplete { get; set; }
-        [NotMapped]
-        public string Games { get; set; }
+        
     }
 }

@@ -1,4 +1,4 @@
-﻿@model _7Element.Models.DonatedTickets
+﻿@model _7Element.Models.ViewModels.DonatedTicketsCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -12,25 +12,53 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PredsGameId" class="control-label"></label>
-                <select asp-for="PredsGameId" class ="form-control" asp-items="ViewBag.PredsGameId"></select>
+                <label asp-for="DonatedTickets.PredsGameId" class="control-label"></label>
+                <select asp-for="DonatedTickets.PredsGameId" class="form-control" asp-items="ViewBag.PredsGameId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                <label asp-for="NumberOfTickets" class="control-label"></label>
+                <select asp-for="NumberOfTickets" class="form-control" asp-items="ViewBag.NumberOfTickets"></select>
             </div>
             <div class="form-group">
-                <label asp-for="EmailTitle" class="control-label"></label>
-                <input asp-for="EmailTitle" class="form-control" />
-                <span asp-validation-for="EmailTitle" class="text-danger"></span>
+                <label asp-for="Section" class="control-label"></label>
+                <input asp-for="Section" class="form-control" />
+                <span asp-validation-for="Section" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmailBody" class="control-label"></label>
-                <textarea asp-for="EmailBody" class="form-control"></textarea>
-                <span asp-validation-for="EmailBody" class="text-danger"></span>
+                <label asp-for="Row" class="control-label"></label>
+                <input asp-for="Row" class="form-control" />
+                <span asp-validation-for="Row" class="text-danger"></span>
             </div>
-            <div>@Html.DisplayFor(modelItem => Model.PredsGame.Opponent)</div>
+            <div class="form-group">
+                <label asp-for="Seats" class="control-label"></label>
+                <input asp-for="Seats" class="form-control" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seats" class="control-label"></label>
+                <input asp-for="Seats" class="form-control" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seats" class="control-label"></label>
+                <input asp-for="Seats" class="form-control" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DonatedTickets.EmailAddress" class="control-label"></label>
+                <input asp-for="DonatedTickets.EmailAddress" class="form-control" />
+                <span asp-validation-for="DonatedTickets.EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DonatedTickets.EmailTitle" class="control-label"></label>
+                <input asp-for="DonatedTickets.EmailTitle" class="form-control" />
+                <span asp-validation-for="DonatedTickets.EmailTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DonatedTickets.EmailBody" class="control-label"></label>
+                <textarea asp-for="DonatedTickets.EmailBody" class="form-control"></textarea>
+                <span asp-validation-for="DonatedTickets.EmailBody" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Donate" class="btn btn-primary" />
             </div>

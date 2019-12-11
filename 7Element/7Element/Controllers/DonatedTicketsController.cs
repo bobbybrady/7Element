@@ -9,6 +9,8 @@ using _7Element.Data;
 using _7Element.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
+using Microsoft.AspNetCore.Identity;
+using _7Element.Models.ViewModels;
 
 namespace _7Element.Controllers
 {
@@ -16,10 +18,12 @@ namespace _7Element.Controllers
     public class DonatedTicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DonatedTicketsController(ApplicationDbContext context)
+        public DonatedTicketsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: DonatedTickets
@@ -61,8 +65,21 @@ namespace _7Element.Controllers
                 Positions.Add(new SelectListItem() { Text = ($"{pg.DateTime} {pg.Opponent}"), Value = pg.PredsGameId.ToString() });
             }
             ViewData["PredsGameId"] = Positions;
-
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            List<SelectListItem> NumberOfTickets = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text="2", Value="2"},
+                new SelectListItem() { Text="3", Value="3"},
+                new SelectListItem() {Text="4", Value="4"},
+                new SelectListItem() { Text="5", Value="5"},
+                new SelectListItem() {Text="6", Value="6"},
+                new SelectListItem() { Text="7", Value="7"},
+                new SelectListItem() {Text="8", Value="8"},
+                new SelectListItem() { Text="9", Value="9"},
+                new SelectListItem() {Text="10", Value="10"}
+            };
+            
+            ViewData["NumberOfTickets"] = NumberOfTickets;
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             return View();
         }
 
@@ -71,17 +88,25 @@ namespace _7Element.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DonatedTicketsId,UserId,PredsGameId,EmailAddress,EmailTitle,EmailBody,TransactionComplete")] DonatedTickets donatedTickets)
+        public async Task<IActionResult> Create([Bind("DonatedTicketsId,UserId,PredsGameId,EmailAddress,EmailTitle,EmailBody,TransactionComplete")] DonatedTicketsCreateViewModel dtcvm)
         {
+            ModelState.Remove("Product.UserId");
             if (ModelState.IsValid)
             {
-                _context.Add(donatedTickets);
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                dtcvm.DonatedTickets.User = user;
+                dtcvm.DonatedTickets.UserId = user.Id;
+                dtcvm.TicketManager();
+                foreach(Ticket ticket in dtcvm.Tickets)
+                {
+                    _context.Add(dtcvm.Tickets);
+                }
+                _context.Add(dtcvm.DonatedTickets);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PredsGameId"] = new SelectList(_context.PredsGame, "PredsGameId", "PredsGameId", donatedTickets.PredsGameId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", donatedTickets.UserId);
-            return View(donatedTickets);
+            ViewData["PredsGameId"] = new SelectList(_context.PredsGame, "PredsGameId", "PredsGameId", dtcvm.DonatedTickets.PredsGameId);
+            return View(dtcvm.DonatedTickets);
         }
 
         // GET: DonatedTickets/Edit/5
