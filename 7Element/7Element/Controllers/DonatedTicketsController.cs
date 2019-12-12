@@ -88,25 +88,22 @@ namespace _7Element.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DonatedTicketsId,UserId,PredsGameId,EmailAddress,EmailTitle,EmailBody,TransactionComplete")] DonatedTicketsCreateViewModel dtcvm)
+        public async Task<IActionResult> Create(DonatedTicketsCreateViewModel dtcvm)
         {
-            ModelState.Remove("Product.UserId");
+            ModelState.Remove("DonatedTickets.UserId");
+            ModelState.Remove("DonatedTickets.User");
+            ModelState.Remove("DonatedTickets.PredsGame");
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 dtcvm.DonatedTickets.User = user;
                 dtcvm.DonatedTickets.UserId = user.Id;
-                dtcvm.TicketManager();
-                foreach(Ticket ticket in dtcvm.Tickets)
-                {
-                    _context.Add(dtcvm.Tickets);
-                }
                 _context.Add(dtcvm.DonatedTickets);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PredsGameId"] = new SelectList(_context.PredsGame, "PredsGameId", "PredsGameId", dtcvm.DonatedTickets.PredsGameId);
-            return View(dtcvm.DonatedTickets);
+            return View();
         }
 
         // GET: DonatedTickets/Edit/5

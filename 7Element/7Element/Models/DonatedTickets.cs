@@ -23,15 +23,6 @@ namespace _7Element.Models
         [Required]
         public PredsGame PredsGame { get; set; }
         
-        [Required]
-        [Display(Name = "Email Address")]
-        public string EmailAddress {get; set;}
-        [Required]
-        [Display(Name = "Title")]
-        public string EmailTitle { get; set; }
-        [Required]
-        [Display(Name = "Message")]
-        public string EmailBody { get; set; }
         public bool TransactionComplete { get; set; }
         
     }

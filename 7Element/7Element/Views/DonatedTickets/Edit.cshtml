@@ -23,21 +23,6 @@
                 <select asp-for="PredsGameId" class="form-control" asp-items="ViewBag.PredsGameId"></select>
                 <span asp-validation-for="PredsGameId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmailTitle" class="control-label"></label>
-                <input asp-for="EmailTitle" class="form-control" />
-                <span asp-validation-for="EmailTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmailBody" class="control-label"></label>
-                <input asp-for="EmailBody" class="form-control" />
-                <span asp-validation-for="EmailBody" class="text-danger"></span>
-            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="TransactionComplete" /> @Html.DisplayNameFor(model => model.TransactionComplete)

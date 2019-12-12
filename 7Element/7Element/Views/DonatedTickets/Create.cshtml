@@ -7,6 +7,7 @@
 <h1>Donate</h1>
 
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -17,58 +18,38 @@
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfTickets" class="control-label"></label>
-                <select asp-for="NumberOfTickets" class="form-control" asp-items="ViewBag.NumberOfTickets"></select>
+                <select asp-for="NumberOfTickets" onchange="CallChangefunc(this)" class="form-control" asp-items="ViewBag.NumberOfTickets"></select>
             </div>
+            <div id="container"></div>
+            @Html.Hidden("myVar", "0")
+            @*@for (int i = 0; i < Int32.Parse(); i++)
+            {
+                <label asp-for="@Model.Tickets[i].Section" />
+                <input asp-for="@Model.Tickets[i].Section" />
+                <label asp-for="@Model.Tickets[i].Row" />
+                <input asp-for="@Model.Tickets[i].Row" />
+                <label asp-for="@Model.Tickets[i].Seat" />
+                <input asp-for="@Model.Tickets[i].Seat" />
+            }*@
             <div class="form-group">
-                <label asp-for="Section" class="control-label"></label>
-                <input asp-for="Section" class="form-control" />
-                <span asp-validation-for="Section" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Row" class="control-label"></label>
-                <input asp-for="Row" class="form-control" />
-                <span asp-validation-for="Row" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Seats" class="control-label"></label>
-                <input asp-for="Seats" class="form-control" />
-                <span asp-validation-for="Seats" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Seats" class="control-label"></label>
-                <input asp-for="Seats" class="form-control" />
-                <span asp-validation-for="Seats" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Seats" class="control-label"></label>
-                <input asp-for="Seats" class="form-control" />
-                <span asp-validation-for="Seats" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DonatedTickets.EmailAddress" class="control-label"></label>
-                <input asp-for="DonatedTickets.EmailAddress" class="form-control" />
-                <span asp-validation-for="DonatedTickets.EmailAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DonatedTickets.EmailTitle" class="control-label"></label>
-                <input asp-for="DonatedTickets.EmailTitle" class="form-control" />
-                <span asp-validation-for="DonatedTickets.EmailTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DonatedTickets.EmailBody" class="control-label"></label>
-                <textarea asp-for="DonatedTickets.EmailBody" class="form-control"></textarea>
-                <span asp-validation-for="DonatedTickets.EmailBody" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Donate" class="btn btn-primary" />
+                <input type="submit" value="Next" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+<script>
+    function CallChangefunc(obj) {
+        const place = document.getElementById("myVar")
+        place.value = (obj.options[obj.selectedIndex].text)
+        @*const container = getElementById("#container")
+        for (i = 0; i < place.value; i++){
+            const tickets = @Model.Tickets
+            const one = `<label asp-for="${tickets[i].Section}" />`
+            container.innerHTML = `${one}`
+        }*@
+    }
+</script>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
