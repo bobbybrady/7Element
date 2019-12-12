@@ -93,12 +93,22 @@ namespace _7Element.Controllers
             ModelState.Remove("DonatedTickets.UserId");
             ModelState.Remove("DonatedTickets.User");
             ModelState.Remove("DonatedTickets.PredsGame");
+            for(int i = 0; i < dtcvm.Tickets.Count ; i++)
+            {
+            ModelState.Remove($"Tickets[{i}].DonatedTickets");
+            }
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 dtcvm.DonatedTickets.User = user;
                 dtcvm.DonatedTickets.UserId = user.Id;
                 _context.Add(dtcvm.DonatedTickets);
+                await _context.SaveChangesAsync();
+                foreach (var ticket in dtcvm.Tickets)
+                {
+                    ticket.DonatedTicketsId = dtcvm.DonatedTickets.DonatedTicketsId;
+                    _context.Add(ticket);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

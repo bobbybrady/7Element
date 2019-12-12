@@ -1,0 +1,132 @@
+﻿@model _7Element.Models.ViewModels.PickupGamesViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Upcoming Games</h1>
+@if (Model.User.IsAdmin == true)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].MaxSkaters)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].MaxGoalies)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Upcoming)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxSkaters)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxGoalies)
+                </td>
+                @if (Model.User.IsAdmin == true)
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PickupGameId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.PickupGameId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PickupGameId">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.PickupGameId">Details</a>
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].MaxSkaters)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupGames[0].MaxGoalies)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <h1>Past Games</h1>
+    <tbody>
+        @foreach (var item in Model.Past)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxSkaters)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxGoalies)
+                </td>
+                @if (Model.User.IsAdmin == true)
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PickupGameId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.PickupGameId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PickupGameId">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.PickupGameId">Details</a>
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
