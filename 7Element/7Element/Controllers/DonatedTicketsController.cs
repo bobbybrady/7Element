@@ -110,9 +110,13 @@ namespace _7Element.Controllers
                     _context.Add(ticket);
                 }
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Confirmation));
             }
             ViewData["PredsGameId"] = new SelectList(_context.PredsGame, "PredsGameId", "PredsGameId", dtcvm.DonatedTickets.PredsGameId);
+            return View();
+        }
+        public async Task<IActionResult> Confirmation()
+        {
             return View();
         }
 
