@@ -3,8 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
+<h1>Donated Tickets</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,10 +12,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.User.FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PredsGame)
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PredsGame.Opponent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PredsGame.DateTime)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TransactionComplete)
@@ -28,16 +33,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PredsGame.PredsGameId)
+                @Html.DisplayFor(modelItem => item.User.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PredsGame.Opponent)
+            </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.PredsGame.DateTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TransactionComplete)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DonatedTicketsId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.DonatedTicketsId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.DonatedTicketsId">Delete</a>
             </td>

@@ -35,7 +35,7 @@ namespace _7Element.Controllers
         // GET: DonatedTickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.DonatedTickets.Include(d => d.PredsGame).Include(d => d.User);
+            var applicationDbContext = _context.DonatedTickets.Include(d => d.PredsGame).Include(d => d.User).OrderBy(d => d.TransactionComplete);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -57,6 +57,32 @@ namespace _7Element.Controllers
             }
 
             return View(donatedTickets);
+        }
+        public async Task<IActionResult> Approve(int id)
+        {
+            var dt = _context.DonatedTickets.FirstOrDefaultAsync(m => m.DonatedTicketsId == id);
+            dt.Result.TransactionComplete = true;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(dt);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!DonatedTicketsExists(dt.Result.DonatedTicketsId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(dt);
         }
 
         // GET: DonatedTickets/Create
@@ -86,7 +112,11 @@ namespace _7Element.Controllers
 
             ViewData["NumberOfTickets"] = NumberOfTickets;
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            return View();
+            DonatedTicketsCreateViewModel dtcvm = new DonatedTicketsCreateViewModel()
+            {
+                user = user
+            };
+            return View(dtcvm);
         }
 
         // POST: DonatedTickets/Create
