@@ -257,9 +257,6 @@ namespace _7Element.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     PredsGameId = table.Column<int>(nullable: false),
-                    EmailAddress = table.Column<string>(nullable: false),
-                    EmailTitle = table.Column<string>(nullable: false),
-                    EmailBody = table.Column<string>(nullable: false),
                     TransactionComplete = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -339,8 +336,8 @@ namespace _7Element.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsAdmin", "IsVeteran", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Position", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "873f4cdd-fb2f-4bc9-9ac3-303aecc81121", "admin@admin.com", true, "Admina", true, true, "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEJmHQEdWU9CycZ6F9nXcRQUW63yhzWktpRfqhtxvu8gvjZ+yM/XSqVAkZqtj4u5Amg==", null, false, "Goalie", "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com" },
-                    { "00000000-ffff-ffff-ffff-fffffffff123", 0, "b0a7c5c9-d7e2-4269-bdbc-2913238a29c2", "bobby@bobby.com", true, "Bobby", false, true, "Brady", false, null, "BOBBY@BOBBY.COM", "BOBBY@BOBBY.COM", "AQAAAAEAACcQAAAAED+WsEGm2AQlqD6aEvI4kfX3Lu0pfHOP7cx4BcFJlI3RM5CtzjdBH7E8pVmlddO8mg==", null, false, "Forward", "7f434309-a4d9-48e9-9ebb-8803db794123", false, "bobby@bobby.com" }
+                    { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "5015a647-7a97-47dc-8c4f-34a0d2e6fb57", "admin@admin.com", true, "Admina", true, true, "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAELxpVepnhBxaTcUC7ER4ejDr98rgC273fKUX8H1QmT84bKUIrx1PlbzfkoY8Ex5cwA==", null, false, "Goalie", "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com" },
+                    { "00000000-ffff-ffff-ffff-fffffffff123", 0, "9ae51974-6dd7-42b5-85c1-c0e25adcc156", "bobby@bobby.com", true, "Bobby", false, true, "Brady", false, null, "BOBBY@BOBBY.COM", "BOBBY@BOBBY.COM", "AQAAAAEAACcQAAAAEJfIwwIy0pzd8bh4w4kcG0oLBZSOPlH5X0G9PrgCr10AoCml9uIiLvu0IctecPFqZw==", null, false, "Forward", "7f434309-a4d9-48e9-9ebb-8803db794123", false, "bobby@bobby.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -348,22 +345,22 @@ namespace _7Element.Migrations
                 columns: new[] { "PickupGameId", "DateTime", "Location", "MaxGoalies", "MaxSkaters", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2019, 12, 10, 13, 24, 52, 453, DateTimeKind.Local).AddTicks(1298), "Ford Ice Bellvue", 2, 20, "Hockey" },
-                    { 2, new DateTime(2019, 12, 10, 13, 24, 52, 453, DateTimeKind.Local).AddTicks(8501), "Ford Ice Antioch", 2, 20, "Hockey again" }
+                    { 1, new DateTime(2019, 12, 12, 9, 24, 32, 801, DateTimeKind.Local).AddTicks(6759), "Ford Ice Bellvue", 2, 20, "Hockey" },
+                    { 2, new DateTime(2019, 12, 12, 9, 24, 32, 802, DateTimeKind.Local).AddTicks(4840), "Ford Ice Antioch", 2, 20, "Hockey again" }
                 });
 
             migrationBuilder.InsertData(
                 table: "PredsGame",
                 columns: new[] { "PredsGameId", "DateTime", "Opponent" },
-                values: new object[] { 1, new DateTime(2019, 12, 10, 13, 24, 52, 454, DateTimeKind.Local).AddTicks(7975), "Dallas Stars" });
+                values: new object[] { 1, new DateTime(2019, 12, 12, 9, 24, 32, 803, DateTimeKind.Local).AddTicks(3395), "Dallas Stars" });
 
             migrationBuilder.InsertData(
                 table: "DonatedTickets",
-                columns: new[] { "DonatedTicketsId", "EmailAddress", "EmailBody", "EmailTitle", "PredsGameId", "TransactionComplete", "UserId" },
+                columns: new[] { "DonatedTicketsId", "PredsGameId", "TransactionComplete", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "test@test.com", "test", "test", 1, true, "00000000-ffff-ffff-ffff-ffffffffffff" },
-                    { 2, "test@test.com", "test", "test", 1, true, "00000000-ffff-ffff-ffff-ffffffffffff" }
+                    { 1, 1, true, "00000000-ffff-ffff-ffff-ffffffffffff" },
+                    { 2, 1, true, "00000000-ffff-ffff-ffff-ffffffffffff" }
                 });
 
             migrationBuilder.InsertData(
@@ -382,8 +379,8 @@ namespace _7Element.Migrations
                 columns: new[] { "UserPickupGameId", "DateTime", "IsStandby", "PickupGameId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2019, 12, 10, 13, 24, 52, 454, DateTimeKind.Local).AddTicks(1602), false, 1, "00000000-ffff-ffff-ffff-ffffffffffff" },
-                    { 2, new DateTime(2019, 12, 10, 13, 24, 52, 454, DateTimeKind.Local).AddTicks(2535), false, 1, "00000000-ffff-ffff-ffff-fffffffff123" }
+                    { 1, new DateTime(2019, 12, 12, 9, 24, 32, 802, DateTimeKind.Local).AddTicks(6869), false, 1, "00000000-ffff-ffff-ffff-ffffffffffff" },
+                    { 2, new DateTime(2019, 12, 12, 9, 24, 32, 802, DateTimeKind.Local).AddTicks(7674), false, 1, "00000000-ffff-ffff-ffff-fffffffff123" }
                 });
 
             migrationBuilder.InsertData(
