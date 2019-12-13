@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using System.Net.Http;
 using Microsoft.AspNetCore.Identity;
 using _7Element.Models.ViewModels;
+using _7Element.Email;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 namespace _7Element.Controllers
 {
@@ -20,12 +23,15 @@ namespace _7Element.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public DonatedTicketsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private string emailSecret = null;
+        private string password = null;
+        public DonatedTicketsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
+            Configuration = configuration;
         }
-
+        public IConfiguration Configuration { get; }
         // GET: DonatedTickets
         public async Task<IActionResult> Index()
         {
@@ -77,7 +83,7 @@ namespace _7Element.Controllers
                 new SelectListItem() { Text="9", Value="9"},
                 new SelectListItem() {Text="10", Value="10"}
             };
-            
+
             ViewData["NumberOfTickets"] = NumberOfTickets;
             var user = await _userManager.GetUserAsync(HttpContext.User);
             return View();
@@ -93,9 +99,9 @@ namespace _7Element.Controllers
             ModelState.Remove("DonatedTickets.UserId");
             ModelState.Remove("DonatedTickets.User");
             ModelState.Remove("DonatedTickets.PredsGame");
-            for(int i = 0; i < dtcvm.Tickets.Count ; i++)
+            for (int i = 0; i < dtcvm.Tickets.Count; i++)
             {
-            ModelState.Remove($"Tickets[{i}].DonatedTickets");
+                ModelState.Remove($"Tickets[{i}].DonatedTickets");
             }
             if (ModelState.IsValid)
             {
@@ -110,6 +116,32 @@ namespace _7Element.Controllers
                     _context.Add(ticket);
                 }
                 await _context.SaveChangesAsync();
+                emailSecret = Configuration["EmailSecrets:Email"];
+                password = Configuration["EmailSecrets:Password"];
+                EmailSettings es = new EmailSettings()
+                {
+                    PrimaryDomain = "smtp.gmail.com",
+                    PrimaryPort = 587,
+                    SecondayDomain = "smtp.gmail.com",
+                    SecondaryPort = 587,
+                    UsernameEmail = emailSecret,
+                    UsernamePassword = password,
+                    FromEmail = "sevenelementtest@gmail.com",
+                    ToEmail = user.Email
+                };
+                string email = user.Email;
+                string title = "7Element Donation";
+                string body = $"<h2>Dear {user.FirstName} {user.LastName},</h2><br>" +
+                    $"<p>This email is to confirm your desired donation to for the following {dtcvm.NumberOfTickets} tickets:</p><br><ol>";
+                for (int i = 0; i < dtcvm.Tickets.Count; i++)
+                {
+                    body += $"<li>Section {dtcvm.Tickets[i].Section} Row {dtcvm.Tickets[i].Row} Seat {dtcvm.Tickets[i].Seat}</li>";
+                }
+                body += "</ol><p>To complete your donation please dontate the tickets to tickemaster with the username sevenelementtest@gmail.com.</p><br>" +
+                    "<h3>Thank you,</h3>" +
+                    "<h2>7Element</h2>";
+                AuthMessageSender ams = new AuthMessageSender(Options.Create(es));
+                await ams.SendEmailAsync(email, title, body);
                 return RedirectToAction(nameof(Confirmation));
             }
             ViewData["PredsGameId"] = new SelectList(_context.PredsGame, "PredsGameId", "PredsGameId", dtcvm.DonatedTickets.PredsGameId);
