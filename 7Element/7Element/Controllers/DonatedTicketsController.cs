@@ -60,8 +60,8 @@ namespace _7Element.Controllers
         }
         public async Task<IActionResult> Approve(int id)
         {
-            var dt = _context.DonatedTickets.FirstOrDefaultAsync(m => m.DonatedTicketsId == id);
-            dt.Result.TransactionComplete = true;
+            var dt = await _context.DonatedTickets.FirstOrDefaultAsync(m => m.DonatedTicketsId == id);
+            dt.TransactionComplete = true;
             if (ModelState.IsValid)
             {
                 try
@@ -71,7 +71,7 @@ namespace _7Element.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DonatedTicketsExists(dt.Result.DonatedTicketsId))
+                    if (!DonatedTicketsExists(dt.DonatedTicketsId))
                     {
                         return NotFound();
                     }
@@ -84,7 +84,32 @@ namespace _7Element.Controllers
             }
             return View(dt);
         }
-
+        public async Task<IActionResult> Deny(int id)
+        {
+            var dt = await _context.DonatedTickets.FirstOrDefaultAsync(m => m.DonatedTicketsId == id);
+            dt.TransactionComplete = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(dt);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!DonatedTicketsExists(dt.DonatedTicketsId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(dt);
+        }
         // GET: DonatedTickets/Create
         public async Task<IActionResult> Create()
         {
