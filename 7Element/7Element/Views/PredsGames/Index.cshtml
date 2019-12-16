@@ -1,0 +1,36 @@
+﻿@model IEnumerable<_7Element.Models.PredsGame>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Upcoming Predators Games</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Opponent)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Opponent)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.PredsGameId">Details</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
