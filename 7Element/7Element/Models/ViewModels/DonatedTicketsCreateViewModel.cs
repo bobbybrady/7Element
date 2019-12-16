@@ -9,6 +9,7 @@ namespace _7Element.Models.ViewModels
 {
     public class DonatedTicketsCreateViewModel
     {
+        public ApplicationUser user { get; set; }
         public DonatedTickets DonatedTickets { get; set; }
         public virtual List<Ticket> Tickets { get; set; } = new List<Ticket>();
         [Display(Name = "Number of Tickets")]

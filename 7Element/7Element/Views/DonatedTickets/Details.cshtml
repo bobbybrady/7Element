@@ -4,33 +4,83 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Donated Tickets Details</h1>
 
 <div>
     <h4>DonatedTickets</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PredsGame)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PredsGame.PredsGameId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionComplete)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransactionComplete)
-        </dd>
-    </dl>
+    @if (Model.TransactionComplete == false)
+    {
+        <form asp-action="Approve">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.FirstName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.FirstName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.LastName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.LastName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PredsGame.Opponent)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PredsGame.Opponent)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PredsGame.DateTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PredsGame.DateTime)
+                </dd>
+                <dt class="col-sm-2">
+
+                    <button asp-action="Approve" asp-route-id="@Model.DonatedTicketsId">Approve</button>
+                </dt>
+            </dl>
+        </form>
+    }
+    else
+    {
+        <form asp-action="Approve">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.FirstName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.FirstName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.LastName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.LastName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PredsGame.Opponent)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PredsGame.Opponent)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PredsGame.DateTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PredsGame.DateTime)
+                </dd>
+                <dt class="col-sm-2">
+
+                    <button asp-action="Deny" asp-route-id="@Model.DonatedTicketsId">Deny</button>
+                </dt>
+            </dl>
+        </form>
+    }
 </div>
+    
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.DonatedTicketsId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
