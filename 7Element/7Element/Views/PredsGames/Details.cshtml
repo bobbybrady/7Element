@@ -34,26 +34,51 @@
             </form>
         </div>
     }
-    else
+    else if (Model.UserPredsGame != null && Model.User.IsVeteran == true)
     {<div>
             <h4>PredsGame</h4>
             <hr />
-            <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PredsGame.DateTime)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.PredsGame.DateTime)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PredsGame.Opponent)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.PredsGame.Opponent)
-                </dd>
-            </dl>
+            <form asp-action="Remove">
+                <dl class="row">
+                    @Html.HiddenFor(m => m.predsGameId)
+                    @Html.HiddenFor(m => m.userId)
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PredsGame.DateTime)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PredsGame.DateTime)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PredsGame.Opponent)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PredsGame.Opponent)
+                    </dd>
+                </dl>
+                <input type="submit" value="Remove" class="btn btn-danger" />
+            </form>
         </div>
-        <h4>Applied</h4>
+    }
+    else
+    {
+        <div>
+            <h4>PredsGame</h4>
+            <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PredsGame.DateTime)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PredsGame.DateTime)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PredsGame.Opponent)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PredsGame.Opponent)
+                    </dd>
+                </dl>
+        </div>
     }
     @if (Model.User.IsAdmin == true)
     {

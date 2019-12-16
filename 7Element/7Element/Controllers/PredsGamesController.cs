@@ -72,9 +72,26 @@ namespace _7Element.Controllers
             {
                 _context.Add(UserPredsGame);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction(nameof(ConfirmationApply));
             }
             return View(pgdvm);
+        }
+        [HttpPost, ActionName("Remove")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(PredsGameDetailViewModel pgdvm)
+        {
+            var userPredsGame = await _context.UserPredsGame.FirstOrDefaultAsync(m => m.UserId == pgdvm.userId);
+            if (ModelState.IsValid)
+            {
+                _context.Remove(userPredsGame);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(nameof(Index));
+        }
+        public async Task<IActionResult> ConfirmationApply()
+        {
+            return View();
         }
 
         // GET: PredsGames/Create
