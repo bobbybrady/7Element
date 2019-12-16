@@ -1,0 +1,63 @@
+﻿@model _7Element.Models.ViewModels.PredsGameDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+
+<div>
+    @if (Model.UserPredsGame == null && Model.User.IsVeteran == true)
+    {
+        <div>
+            <h4>PredsGame</h4>
+            <hr />
+            <form asp-action="Apply">
+                <dl class="row">
+                    @Html.HiddenFor(m => m.predsGameId)
+                    @Html.HiddenFor(m => m.userId)
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PredsGame.DateTime)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PredsGame.DateTime)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PredsGame.Opponent)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PredsGame.Opponent)
+                    </dd>
+                </dl>
+                <input type="submit" value="Apply" class="btn btn-primary" />
+            </form>
+        </div>
+    }
+    else
+    {<div>
+            <h4>PredsGame</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PredsGame.DateTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PredsGame.DateTime)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PredsGame.Opponent)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PredsGame.Opponent)
+                </dd>
+            </dl>
+        </div>
+        <h4>Applied</h4>
+    }
+    @if (Model.User.IsAdmin == true)
+    {
+        <button>End</button>
+    }
+    <a asp-action="Index">Back to List</a>
+</div>

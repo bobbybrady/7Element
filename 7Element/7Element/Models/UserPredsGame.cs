@@ -21,7 +21,7 @@ namespace _7Element.Models
         [Required]
         public PredsGame PredsGame { get; set; }
         
-        public int DonatedTicketsId { get; set; }
+        public int? DonatedTicketsId { get; set; }
 
         public DonatedTickets DonatedTickets { get; set; }
     }
