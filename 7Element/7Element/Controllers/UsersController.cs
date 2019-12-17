@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using _7Element.Data;
 using _7Element.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _7Element.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -89,8 +91,11 @@ namespace _7Element.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserId,FirstName,LastName,Position,IsAdmin,IsVeteran")] ApplicationUser user)
+        public async Task<IActionResult> Edit(string id, ApplicationUser user)
         {
+            var userToUpdate = await _userManager.FindByIdAsync(id);
+            userToUpdate.IsAdmin = user.IsAdmin;
+            userToUpdate.IsVeteran = user.IsVeteran;
             if (id != user.Id)
             {
                 return NotFound();
@@ -100,8 +105,7 @@ namespace _7Element.Controllers
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    IdentityResult result = await _userManager.UpdateAsync(userToUpdate);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
