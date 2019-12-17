@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using _7Element.Models;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,6 +36,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="PickupGames" asp-action="Index">Play</a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            if (UserManager.GetUserAsync(User).Result.IsAdmin == true)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                                </li>
+                            }
+                            else
+                            {
+
+                            }
+                        }
                     </ul>
                 </div>
             </div>
