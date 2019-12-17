@@ -133,17 +133,20 @@ namespace _7Element.Controllers
                     Random rnd = new Random();
                     int winningNumber = rnd.Next(0, (donatedTickets.Count() + 1));
                     userPredsGames[winningNumber].DonatedTicketsId = donatedTickets[i].DonatedTicketsId;
+                    userPredsGames[i].DonatedTicketsId = donatedTickets[i].DonatedTicketsId;
                     winners.Add(userPredsGames[winningNumber]);
                     userPredsGames.RemoveAt(winningNumber);
                 }
+                foreach (var upg in winners)
+                {
+                    _context.UserPredsGame.Update(upg);
+                    var user = await _userManager.FindByIdAsync(upg.UserId);
+                    var tickets = await _context.Ticket.Where(t => t.DonatedTicketsId == upg.DonatedTicketsId).ToListAsync();
+                    await SendEmail(user, tickets, predsGame);
+                };
+                _context.PredsGame.Update(predsGame);
+                await _context.SaveChangesAsync();
             }
-
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add();
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(ConfirmationApply));
-            //}
             return RedirectToAction(nameof(Index));
         }
         // GET: PredsGames/Create
@@ -275,7 +278,7 @@ namespace _7Element.Controllers
             {
                 body += $"<li>Section {tickets[i].Section} Row {tickets[i].Row} Seat {tickets[i].Seat}</li>";
             }
-            body += $"</ol><p>For the Nashville Predators game on the {game.DateTime} vs the {game.Opponent} </p><br>" +
+            body += $"</ol><p>For the Nashville Predators game on the {game.DateTime} vs the {game.Opponent}. </p><br>" +
                 "<h3>Thank you,</h3>" +
                 "<h2>7Element</h2>";
             AuthMessageSender ams = new AuthMessageSender(Options.Create(es));
