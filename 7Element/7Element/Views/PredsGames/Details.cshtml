@@ -8,7 +8,7 @@
 
 
 <div>
-    @if (Model.UserPredsGame == null && Model.User.IsVeteran == true)
+    @if (Model.UserPredsGame == null && Model.User.IsVeteran == true && Model.PredsGame.Open == true)
     {
         <div>
             <h4>PredsGame</h4>
@@ -34,7 +34,7 @@
             </form>
         </div>
     }
-    else if (Model.UserPredsGame != null && Model.User.IsVeteran == true)
+    else if (Model.UserPredsGame != null && Model.User.IsVeteran == true && Model.PredsGame.Open == true)
     {<div>
             <h4>PredsGame</h4>
             <hr />
@@ -82,7 +82,10 @@
     }
     @if (Model.User.IsAdmin == true)
     {
-        <button>End</button>
+<form asp-action="End">
+    @Html.HiddenFor(m => m.predsGameId)
+    <input type="submit" value="End" class="btn btn-danger" />
+</form>
     }
     <a asp-action="Index">Back to List</a>
 </div>
