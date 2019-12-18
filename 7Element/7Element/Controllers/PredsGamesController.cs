@@ -159,9 +159,14 @@ namespace _7Element.Controllers
             return RedirectToAction(nameof(Index));
         }
         // GET: PredsGames/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
+            {
+                return View();
+            }
+            return Redirect("/home");
         }
 
         // POST: PredsGames/Create
@@ -171,30 +176,41 @@ namespace _7Element.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PredsGameId,DateTime,Opponent")] PredsGame predsGame)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                predsGame.Open = true;
-                _context.Add(predsGame);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    predsGame.Open = true;
+                    _context.Add(predsGame);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(predsGame);
+
             }
-            return View(predsGame);
+            return Redirect("/home");
         }
 
         // GET: PredsGames/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var predsGame = await _context.PredsGame.FindAsync(id);
-            if (predsGame == null)
-            {
-                return NotFound();
+                var predsGame = await _context.PredsGame.FindAsync(id);
+                if (predsGame == null)
+                {
+                    return NotFound();
+                }
+                return View(predsGame);
             }
-            return View(predsGame);
+            return Redirect("/home");
         }
 
         // POST: PredsGames/Edit/5
@@ -204,50 +220,60 @@ namespace _7Element.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PredsGameId,DateTime,Opponent")] PredsGame predsGame)
         {
-            if (id != predsGame.PredsGameId)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                return NotFound();
-            }
+                if (id != predsGame.PredsGameId)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(predsGame);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PredsGameExists(predsGame.PredsGameId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(predsGame);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!PredsGameExists(predsGame.PredsGameId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(predsGame);
             }
-            return View(predsGame);
+            return Redirect("/home");
         }
 
         // GET: PredsGames/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var predsGame = await _context.PredsGame
-                .FirstOrDefaultAsync(m => m.PredsGameId == id);
-            if (predsGame == null)
-            {
-                return NotFound();
-            }
+                var predsGame = await _context.PredsGame
+                    .FirstOrDefaultAsync(m => m.PredsGameId == id);
+                if (predsGame == null)
+                {
+                    return NotFound();
+                }
 
-            return View(predsGame);
+                return View(predsGame);
+            }
+            return Redirect("/home");
         }
 
         // POST: PredsGames/Delete/5
@@ -255,10 +281,15 @@ namespace _7Element.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var predsGame = await _context.PredsGame.FindAsync(id);
-            _context.PredsGame.Remove(predsGame);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
+            {
+                var predsGame = await _context.PredsGame.FindAsync(id);
+                _context.PredsGame.Remove(predsGame);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return Redirect("/home");
         }
 
         private bool PredsGameExists(int id)
