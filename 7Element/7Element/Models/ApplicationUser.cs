@@ -25,10 +25,11 @@ namespace _7Element.Models
         }
         [Required]
         public string Position { get; set; }
+        [Display(Name = "Admin")]
         public bool IsAdmin { get; set; }
+        [Display(Name = "Veteran")]
         public bool IsVeteran { get; set; }
         
-        //public override string UserName { get; set; }
         public virtual ICollection<PlayerStats> PlayerStats { get; set; }
         public virtual ICollection<UserPickupGame> UserPickupGames { get; set; }
         public virtual ICollection<UserPredsGame> UserPredsGames { get; set; }

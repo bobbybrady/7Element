@@ -12,9 +12,11 @@ using _7Element.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
 using _7Element.Email;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _7Element.Controllers
 {
+    [Authorize]
     public class PredsGamesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -34,7 +36,14 @@ namespace _7Element.Controllers
         public async Task<IActionResult> Index()
         {
             var date = DateTime.Now;
-            return View(await _context.PredsGame.Where(d => d.DateTime > date && d.Open == true).ToListAsync());
+            var predsGames = await _context.PredsGame.Where(d => d.DateTime > date && d.Open == true).ToListAsync();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            PredsGameIndexViewModel pgivm = new PredsGameIndexViewModel()
+            {
+                User = user,
+                PredsGames = predsGames
+            };
+            return View(pgivm);
         }
 
         // GET: PredsGames/Details/5
@@ -164,6 +173,7 @@ namespace _7Element.Controllers
         {
             if (ModelState.IsValid)
             {
+                predsGame.Open = true;
                 _context.Add(predsGame);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

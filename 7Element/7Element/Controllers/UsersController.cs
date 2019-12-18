@@ -27,48 +27,16 @@ namespace _7Element.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var users =  _userManager.Users.ToList();
-            return View(users);
-        }
-
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                return NotFound();
+                var users = _userManager.Users.ToList();
+                return View(users);
             }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
+            return Redirect("/home");
         }
 
-        // GET: Users/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,Position,IsAdmin,IsVeteran")] ApplicationUser user)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(user);
-        }
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
