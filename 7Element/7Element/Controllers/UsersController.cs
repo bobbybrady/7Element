@@ -41,17 +41,22 @@ namespace _7Element.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser.IsAdmin == true)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return View(user);
             }
-            return View(user);
+            return Redirect("/home");
         }
 
         // POST: Users/Edit/5
@@ -61,34 +66,39 @@ namespace _7Element.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, ApplicationUser user)
         {
-            var userToUpdate = await _userManager.FindByIdAsync(id);
-            userToUpdate.IsAdmin = user.IsAdmin;
-            userToUpdate.IsVeteran = user.IsVeteran;
-            if (id != user.Id)
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser.IsAdmin == true)
             {
-                return NotFound();
-            }
+                var userToUpdate = await _userManager.FindByIdAsync(id);
+                userToUpdate.IsAdmin = user.IsAdmin;
+                userToUpdate.IsVeteran = user.IsVeteran;
+                if (id != user.Id)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    IdentityResult result = await _userManager.UpdateAsync(userToUpdate);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Id))
+                    try
                     {
-                        return NotFound();
+                        IdentityResult result = await _userManager.UpdateAsync(userToUpdate);
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!UserExists(user.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(user);
             }
-            return View(user);
+            return Redirect("/home");
         }
 
         // GET: Users/Delete/5

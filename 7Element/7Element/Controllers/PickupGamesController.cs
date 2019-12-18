@@ -58,9 +58,14 @@ namespace _7Element.Controllers
         }
 
         // GET: PickupGames/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
+            {
+                return View();
+            }
+            return Redirect("/home");
         }
 
         // POST: PickupGames/Create
@@ -70,29 +75,39 @@ namespace _7Element.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PickupGameId,MaxSkaters,MaxGoalies,DateTime,Location,Title")] PickupGame pickupGame)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                _context.Add(pickupGame);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(pickupGame);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(pickupGame);
             }
-            return View(pickupGame);
+            return Redirect("/home");
         }
 
         // GET: PickupGames/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var pickupGame = await _context.PickupGame.FindAsync(id);
-            if (pickupGame == null)
-            {
-                return NotFound();
+                var pickupGame = await _context.PickupGame.FindAsync(id);
+                if (pickupGame == null)
+                {
+                    return NotFound();
+                }
+                return View(pickupGame);
             }
-            return View(pickupGame);
+            return Redirect("/home");
         }
 
         // POST: PickupGames/Edit/5
@@ -102,50 +117,60 @@ namespace _7Element.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PickupGameId,MaxSkaters,MaxGoalies,DateTime,Location,Title")] PickupGame pickupGame)
         {
-            if (id != pickupGame.PickupGameId)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                return NotFound();
-            }
+                if (id != pickupGame.PickupGameId)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(pickupGame);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PickupGameExists(pickupGame.PickupGameId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(pickupGame);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!PickupGameExists(pickupGame.PickupGameId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(pickupGame);
             }
-            return View(pickupGame);
+            return Redirect("/home");
         }
 
         // GET: PickupGames/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var pickupGame = await _context.PickupGame
-                .FirstOrDefaultAsync(m => m.PickupGameId == id);
-            if (pickupGame == null)
-            {
-                return NotFound();
-            }
+                var pickupGame = await _context.PickupGame
+                    .FirstOrDefaultAsync(m => m.PickupGameId == id);
+                if (pickupGame == null)
+                {
+                    return NotFound();
+                }
 
-            return View(pickupGame);
+                return View(pickupGame);
+            }
+            return Redirect("/home");
         }
 
         // POST: PickupGames/Delete/5
@@ -153,10 +178,15 @@ namespace _7Element.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pickupGame = await _context.PickupGame.FindAsync(id);
-            _context.PickupGame.Remove(pickupGame);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user.IsAdmin == true)
+            {
+                var pickupGame = await _context.PickupGame.FindAsync(id);
+                _context.PickupGame.Remove(pickupGame);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return Redirect("/home");
         }
 
         private bool PickupGameExists(int id)
