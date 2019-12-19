@@ -49,6 +49,14 @@ namespace _7Element.Controllers
 
             var pickupGame = await _context.PickupGame
                 .FirstOrDefaultAsync(m => m.PickupGameId == id);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var UserPickupGamesList = await _context.UserPickupGame.Where(m => m.PickupGameId == pickupGame.PickupGameId).ToListAsync();
+            var userList = new List<ApplicationUser>();
+            foreach (var userPickupGame in UserPickupGamesList)
+            {
+                var u = await _userManager.FindByIdAsync(userPickupGame.UserId);
+                userList.Add(u);
+            }
             if (pickupGame == null)
             {
                 return NotFound();
