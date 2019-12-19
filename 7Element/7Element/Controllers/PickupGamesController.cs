@@ -56,6 +56,49 @@ namespace _7Element.Controllers
 
             return View(pickupGame);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Apply(int PickupGameId, int MaxSkaters, int MaxGoalies)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var numberOfApplicants = await _context.PickupGame.Where(m => m.PickupGameId == PickupGameId).ToListAsync();
+            if (user.Position == "Skater")
+            {
+                UserPickupGame upg = new UserPickupGame()
+                {
+                    PickupGameId = PickupGameId,
+                    UserId = user.Id,
+                    IsStandby = (numberOfApplicants.Count < MaxSkaters) ? false : true,
+                    DateTime = DateTime.Now
+                };
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(upg);
+                    await _context.SaveChangesAsync();
+                    return Redirect($"/PickupGames/Details/{PickupGameId}");
+                }
+
+            }
+            else
+            {
+                UserPickupGame upg = new UserPickupGame()
+                {
+                    PickupGameId = PickupGameId,
+                    UserId = user.Id,
+                    IsStandby = (numberOfApplicants.Count < MaxGoalies) ? false : true,
+                    DateTime = DateTime.Now
+                };
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(upg);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", new { PickupGameId = PickupGameId });
+                }
+            }
+            return Redirect("/home");
+        }
 
         // GET: PickupGames/Create
         public async Task<IActionResult> Create()

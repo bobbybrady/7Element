@@ -42,7 +42,15 @@
         </dd>
     </dl>
 </div>
+@if(Model.DateTime > DateTime.Now)
+{
+<form asp-action="Apply">
+    @Html.HiddenFor(m => m.PickupGameId)
+    @Html.HiddenFor(m => m.MaxSkaters)
+    @Html.HiddenFor(m => m.MaxGoalies)
+    <input type="submit" value="Apply" class="btn btn-primary" />
+</form>
+}
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.PickupGameId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
