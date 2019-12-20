@@ -123,6 +123,12 @@ else
         }
     </tbody>
 </table>
+@if (Model.PickupGame.DateTime < DateTime.Now)
+{
+<div>
+    <a asp-action="Index">Game Stats</a>
+</div>
+}
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
