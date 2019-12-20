@@ -30,7 +30,7 @@
                         @Html.DisplayFor(model => model.PredsGame.Opponent)
                     </dd>
                 </dl>
-                <input type="submit" value="Apply" class="btn btn-primary" />
+                <input type="submit" value="I want tickets!" class="btn btn-primary" />
             </form>
         </div>
     }
@@ -55,7 +55,7 @@
                         @Html.DisplayFor(model => model.PredsGame.Opponent)
                     </dd>
                 </dl>
-                <input type="submit" value="Remove" class="btn btn-danger" />
+                <input type="submit" value="I no longer want tickets." class="btn btn-danger" />
             </form>
         </div>
     }
@@ -84,7 +84,7 @@
     {
 <form asp-action="End">
     @Html.HiddenFor(m => m.predsGameId)
-    <input type="submit" value="End" class="btn btn-danger" />
+    <input type="submit" value="Close Submissions" class="btn btn-danger" />
 </form>
     }
     <a asp-action="Index">Back to List</a>

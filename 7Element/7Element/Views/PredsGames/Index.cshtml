@@ -1,36 +1,43 @@
-﻿@model IEnumerable<_7Element.Models.PredsGame>
+﻿@model _7Element.Models.ViewModels.PredsGameIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Upcoming Predators Games</h1>
+@if (Model.User.IsAdmin == true)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DateTime)
+                @Html.DisplayNameFor(model => model.PredsGames[0].DateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Opponent)
+                @Html.DisplayNameFor(model => model.PredsGames[0].Opponent)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Opponent)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.PredsGameId">Details</a> 
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.PredsGames)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opponent)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.PredsGameId">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

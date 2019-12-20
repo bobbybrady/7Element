@@ -115,7 +115,7 @@ namespace _7Element.Controllers
         {
             DateTime date = DateTime.Now.AddDays(7);
             var currentDateTime = DateTime.Now;
-            var predsGames = await _context.PredsGame.Where(pg => pg.DateTime > currentDateTime && pg.DateTime < date).ToListAsync();
+            var predsGames = await _context.PredsGame.Where(pg => pg.DateTime > currentDateTime && pg.DateTime < date && pg.Open == true).ToListAsync();
             List<SelectListItem> Positions = new List<SelectListItem>();
             foreach (var pg in predsGames)
             {

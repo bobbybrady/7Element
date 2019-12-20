@@ -1,4 +1,4 @@
-﻿@model _7Element.Models.PickupGame
+﻿@model _7Element.Models.ViewModels.PickupGameDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,39 +10,116 @@
     <h4>PickupGame</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxSkaters)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupGame.MaxSkaters)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaxSkaters)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupGame.MaxSkaters)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxGoalies)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupGame.MaxGoalies)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaxGoalies)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupGame.MaxGoalies)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateTime)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupGame.DateTime)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateTime)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupGame.DateTime)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupGame.Location)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupGame.Location)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupGame.Title)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupGame.Title)
         </dd>
     </dl>
 </div>
+@if (Model.PickupGame.DateTime > DateTime.Now && Model.UserPickupGame == null && Model.User.IsVeteran == true)
+{
+    <form asp-action="Apply">
+        @Html.HiddenFor(m => m.PickupGameId)
+        @Html.HiddenFor(m => m.MaxSkaters)
+        @Html.HiddenFor(m => m.MaxGoalies)
+        <input type="submit" value="I would like to attend" class="btn btn-primary" />
+    </form>
+}
+else
+{
+    <form asp-action="Deny">
+        @Html.HiddenFor(m => m.PickupGameId)
+        <input type="submit" value="I can no longer attend" class="btn btn-danger" />
+    </form>
+}
+<h2>Goalies</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model.userPickupGames)
+        {
+            var currentUser = Model.Users.Find(t => t.Id == u.UserId);
+            if (currentUser.Position == "Goalie")
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => currentUser.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => currentUser.LastName)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<h2>Skaters</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model.userPickupGames)
+        {
+            var currentUser = Model.Users.Find(t => t.Id == u.UserId);
+            if (currentUser.Position == "Skater")
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => currentUser.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => currentUser.LastName)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.PickupGameId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
