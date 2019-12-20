@@ -111,7 +111,7 @@ namespace _7Element.Controllers
                 {
                     _context.Add(upg);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { PickupGameId = PickupGameId });
+                    return Redirect($"/PickupGames/Details/{PickupGameId}");
                 }
             }
             return Redirect("/home");

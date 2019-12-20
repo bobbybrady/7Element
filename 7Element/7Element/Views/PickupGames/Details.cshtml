@@ -42,7 +42,9 @@
         </dd>
     </dl>
 </div>
-@if (Model.PickupGame.DateTime > DateTime.Now && Model.UserPickupGame == null && Model.User.IsVeteran == true)
+@if(Model.PickupGame.DateTime > DateTime.Now && Model.userPickupGames.Count < (Model.User.Position == "Skater" ? Model.MaxSkaters : Model.MaxGoalies) && Model.User.IsVeteran == true)
+{
+@if (Model.UserPickupGame == null)
 {
     <form asp-action="Apply">
         @Html.HiddenFor(m => m.PickupGameId)
@@ -57,6 +59,7 @@ else
         @Html.HiddenFor(m => m.PickupGameId)
         <input type="submit" value="I can no longer attend" class="btn btn-danger" />
     </form>
+}
 }
 <h2>Goalies</h2>
 <table class="table">
