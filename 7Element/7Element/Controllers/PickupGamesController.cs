@@ -52,17 +52,26 @@ namespace _7Element.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var UserPickupGamesList = await _context.UserPickupGame.Where(m => m.PickupGameId == pickupGame.PickupGameId).ToListAsync();
             var userList = new List<ApplicationUser>();
-            foreach (var userPickupGame in UserPickupGamesList)
+            var userPickupGame = await _context.UserPickupGame.FirstOrDefaultAsync(u => u.UserId == user.Id && u.PickupGameId == pickupGame.PickupGameId);
+            foreach (var upg in UserPickupGamesList)
             {
-                var u = await _userManager.FindByIdAsync(userPickupGame.UserId);
+                var u = await _userManager.FindByIdAsync(upg.UserId);
                 userList.Add(u);
             }
             if (pickupGame == null)
             {
                 return NotFound();
             }
+            PickupGameDetailViewModel pgdvm = new PickupGameDetailViewModel()
+            {
+                User = user,
+                Users = userList,
+                PickupGame = pickupGame,
+                userPickupGames = UserPickupGamesList,
+                UserPickupGame = userPickupGame
+            };
 
-            return View(pickupGame);
+            return View(pgdvm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -108,6 +117,13 @@ namespace _7Element.Controllers
             return Redirect("/home");
         }
 
+        public async Task<IActionResult> Deny(int PickupGameId)
+        {
+            var toDelete = await _context.UserPickupGame.FirstOrDefaultAsync(m => m.PickupGameId == PickupGameId);
+            _context.UserPickupGame.Remove(toDelete);
+            await _context.SaveChangesAsync();
+            return Redirect($"/PickupGames/Details/{toDelete.PickupGameId}");
+        }
         // GET: PickupGames/Create
         public async Task<IActionResult> Create()
         {
